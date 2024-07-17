@@ -20,7 +20,7 @@ class SimpleForm implements Form {
         $this->onSubmit = $onSubmit;
     }
 
-    public function addButton(string $text, ?callable $callback = null, ?string $image = null): self {
+    public function addButton(string $text, ?string $image = null, ?callable $callback = null): self {
         $button = ["text" => $text, "callback" => $callback];
 
         if ($image !== null) {
