@@ -9,9 +9,9 @@ use pocketmine\player\Player;
 
 class SimpleForm implements Form {
 
-    private $title;
-    private $content;
-    private $buttons = [];
+    private string $title;
+    private string $content;
+    private array $buttons = [];
     private $onSubmit;
 
     public function __construct(string $title, string $content, callable $onSubmit) {
@@ -20,13 +20,29 @@ class SimpleForm implements Form {
         $this->onSubmit = $onSubmit;
     }
 
-    public function addButton(string $text, ?callable $callback = null): self {
-        $this->buttons[] = ["text" => $text, "callback" => $callback];
+    public function addButton(string $text, ?callable $callback = null, ?string $image = null): self {
+        $button = ["text" => $text, "callback" => $callback];
+
+        if ($image !== null) {
+            $button["image"] = [
+                "type" => filter_var($image, FILTER_VALIDATE_URL) ? "url" : "path",
+                "data" => $image
+            ];
+        }
+
+        $this->buttons[] = $button;
         return $this;
     }
 
     public function jsonSerialize(): array {
-        $buttons = array_map(fn($button) => ["text" => $button["text"]], $this->buttons);
+        $buttons = array_map(function($button) {
+            $buttonData = ["text" => $button["text"]];
+            if (isset($button["image"])) {
+                $buttonData["image"] = $button["image"];
+            }
+            return $buttonData;
+        }, $this->buttons);
+
         return [
             "type" => "form",
             "title" => $this->title,
