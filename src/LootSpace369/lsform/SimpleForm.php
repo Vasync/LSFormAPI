@@ -20,21 +20,25 @@ class SimpleForm implements Form {
         $this->onSubmit = $onSubmit;
     }
 
-    public function addButton(string|array $text, ?string $image = null, ?callable $callback = null): self {
+    public function addButton(string|array $text, string|array $image = null, ?callable $callback = null): self {
         $texts = is_array($text) ? $text : [$text];
-        
-        foreach ($texts as $tex_t) {
-            $button = ["text" => $tex_t, "callback" => $callback];
-            if ($image !== null) {
+        $images = is_array($image) ? $image : [$image];
+
+        $maxCount = max(count($texts), count($images));
+
+        for ($i = 0; $i < $maxCount; $i++) {
+            $button = ["text" => $texts[$i] ?? "", "callback" => $callback];
+            if (isset($images[$i]) && $images[$i] !== null) {
                 $button["image"] = [
-                    "type" => filter_var($image, FILTER_VALIDATE_URL) ? "url" : "path",
-                    "data" => $image
+                "type" => filter_var($images[$i], FILTER_VALIDATE_URL) ? "url" : "path",
+                "data" => $images[$i]
                 ];
             }
             $this->buttons[] = $button;
         }
         return $this;
     }
+
 
 
     public function jsonSerialize(): array {
