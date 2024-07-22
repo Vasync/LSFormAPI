@@ -113,7 +113,7 @@ class CustomForm implements Form {
             "text" => $text,
             "options" => $options,
             "default" => $default
-            ]);
+            ];
         return $this;
     }
 
