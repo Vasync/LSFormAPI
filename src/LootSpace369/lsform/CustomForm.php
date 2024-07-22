@@ -107,6 +107,16 @@ class CustomForm implements Form {
         return $this;
     }
 
+    public function addDropdown(string $text, array $options, int $default = null, ?string $label = null) : self {
+        $this->content[] = [
+            "type" => "dropdown",
+            "text" => $text,
+            "options" => $options,
+            "default" => $default
+            ]);
+        return $this;
+    }
+
 
     public function jsonSerialize(): array {
         return [
