@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace LootSpace369\lsform;
+namespace LootSpace369\LSFormAPI;
 
 use pocketmine\form\Form;
 use pocketmine\player\Player;
